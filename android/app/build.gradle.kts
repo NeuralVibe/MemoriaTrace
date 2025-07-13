@@ -7,8 +7,8 @@ plugins {
 
 android {
     namespace = "com.example.memoria_trace"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    compileSdk = 35  // 최신 API 레벨로 명시적 설정
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -25,7 +25,7 @@ android {
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = 21  // MANAGE_EXTERNAL_STORAGE 권한을 위해 최소 API 21 설정
-        targetSdk = flutter.targetSdkVersion
+        targetSdk = 35  // 최신 API 레벨로 설정
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }

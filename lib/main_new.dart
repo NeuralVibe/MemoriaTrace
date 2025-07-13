@@ -42,8 +42,7 @@ class _HomePageState extends State<HomePage> {
     try {
       // Android 11 (API 30) 이상에서는 MANAGE_EXTERNAL_STORAGE 권한 필요
       if (Platform.isAndroid) {
-        // 먼저 기본 저장소 권한 확인
-        PermissionStatus storageStatus = await Permission.storage.status;
+        // MANAGE_EXTERNAL_STORAGE 권한 확인 (Android 11+에서 주로 사용)
         PermissionStatus manageStorageStatus =
             await Permission.manageExternalStorage.status;
 
@@ -51,19 +50,14 @@ class _HomePageState extends State<HomePage> {
           _statusMessage = "저장소 권한 요청 중...";
         });
 
-        // 권한이 없으면 요청
-        if (!storageStatus.isGranted) {
-          storageStatus = await Permission.storage.request();
-        }
-
+        // MANAGE_EXTERNAL_STORAGE 권한이 없으면 요청
         if (!manageStorageStatus.isGranted) {
           manageStorageStatus = await Permission.manageExternalStorage
               .request();
         }
 
         // 권한 상태 업데이트
-        bool hasPermission =
-            storageStatus.isGranted || manageStorageStatus.isGranted;
+        bool hasPermission = manageStorageStatus.isGranted;
 
         setState(() {
           _hasStoragePermission = hasPermission;

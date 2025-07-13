@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'screens/simple_text_converter_screen.dart';
-import 'screens/markdown_list_screen.dart';
-import 'screens/obsidian_settings_screen.dart';
-import 'screens/debug_log_screen.dart';
+import 'screens/simple_voice_converter_screen.dart';
+import 'screens/markdown_list_screen_simple.dart';
+import 'screens/obsidian_settings_screen_simple.dart';
 
 void main() {
   runApp(const MemoriaTraceApp());
@@ -35,7 +34,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   int _currentIndex = 0;
 
   final List<Widget> _screens = [
-    const SimpleTextConverterScreen(),
+    const SimpleVoiceConverterScreen(),
     const MarkdownListScreen(),
     const ObsidianSettingsScreen(),
   ];
@@ -43,27 +42,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _currentIndex == 0
-          ? AppBar(
-              title: const Text('MemoriaTrace'),
-              backgroundColor: Colors.deepPurple,
-              foregroundColor: Colors.white,
-              actions: [
-                IconButton(
-                  icon: const Icon(Icons.bug_report),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const DebugLogScreen(),
-                      ),
-                    );
-                  },
-                  tooltip: '디버그 로그',
-                ),
-              ],
-            )
-          : null,
       body: IndexedStack(index: _currentIndex, children: _screens),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
@@ -73,7 +51,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           });
         },
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.transform), label: '텍스트 변환'),
+          BottomNavigationBarItem(icon: Icon(Icons.transform), label: '파일 변환'),
           BottomNavigationBarItem(icon: Icon(Icons.list), label: '변환 목록'),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: '설정'),
         ],

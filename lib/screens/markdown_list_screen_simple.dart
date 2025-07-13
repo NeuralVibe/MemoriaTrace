@@ -70,7 +70,9 @@ class _MarkdownListScreenState extends State<MarkdownListScreen> {
 
   String _getRelativePath(String fullPath) {
     if (_currentPath.isEmpty) return fullPath;
-    return fullPath.replaceFirst(_currentPath, '').replaceFirst(Platform.pathSeparator, '');
+    return fullPath
+        .replaceFirst(_currentPath, '')
+        .replaceFirst(Platform.pathSeparator, '');
   }
 
   String _formatFileSize(int bytes) {
@@ -81,7 +83,7 @@ class _MarkdownListScreenState extends State<MarkdownListScreen> {
 
   String _formatDateTime(DateTime dateTime) {
     return '${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')} '
-           '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
+        '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
   }
 
   Future<void> _deleteFile(String filePath) async {
@@ -142,19 +144,13 @@ class _MarkdownListScreenState extends State<MarkdownListScreen> {
 
   void _showSuccessSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.green,
-      ),
+      SnackBar(content: Text(message), backgroundColor: Colors.green),
     );
   }
 
   void _showErrorSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.red,
-      ),
+      SnackBar(content: Text(message), backgroundColor: Colors.red),
     );
   }
 
@@ -198,11 +194,7 @@ class _MarkdownListScreenState extends State<MarkdownListScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.folder_off,
-            size: 64,
-            color: Colors.grey[400],
-          ),
+          Icon(Icons.folder_off, size: 64, color: Colors.grey[400]),
           const SizedBox(height: 16),
           const Text(
             'Obsidian 경로가 설정되지 않았습니다',
@@ -223,11 +215,7 @@ class _MarkdownListScreenState extends State<MarkdownListScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.description_outlined,
-            size: 64,
-            color: Colors.grey[400],
-          ),
+          Icon(Icons.description_outlined, size: 64, color: Colors.grey[400]),
           const SizedBox(height: 16),
           const Text(
             '변환된 마크다운 파일이 없습니다',
@@ -276,14 +264,11 @@ class _MarkdownListScreenState extends State<MarkdownListScreen> {
             itemBuilder: (context, index) {
               final file = File(_markdownFiles[index].path);
               final stat = file.statSync();
-              
+
               return Card(
                 margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 child: ListTile(
-                  leading: const Icon(
-                    Icons.description,
-                    color: Colors.green,
-                  ),
+                  leading: const Icon(Icons.description, color: Colors.green),
                   title: Text(
                     _getFileName(file.path),
                     style: const TextStyle(fontWeight: FontWeight.bold),
@@ -374,10 +359,7 @@ class MarkdownViewerScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: SelectableText(
           content,
-          style: const TextStyle(
-            fontFamily: 'monospace',
-            fontSize: 14,
-          ),
+          style: const TextStyle(fontFamily: 'monospace', fontSize: 14),
         ),
       ),
     );
