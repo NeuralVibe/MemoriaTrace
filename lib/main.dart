@@ -403,18 +403,6 @@ class _HomePageState extends State<HomePage> {
                   side: const BorderSide(color: Colors.orange),
                 ),
               ),
-
-            // 테스트 데이터 생성 버튼
-            if (_hasStoragePermission && !_isServiceRunning)
-              ElevatedButton.icon(
-                onPressed: _generateTestData,
-                icon: const Icon(Icons.file_download),
-                label: const Text('테스트 데이터 생성'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
-                ),
-              ),
           ],
         ),
       ),

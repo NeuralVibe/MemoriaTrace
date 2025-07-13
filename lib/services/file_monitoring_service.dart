@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
-import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'markdown_service.dart';
+import 'obsidian_writer.dart';
+import '../utils/call_summary_converter.dart';
 
 class FileMonitoringService {
   static const String serviceId = 'file_monitoring_service';
@@ -52,6 +53,14 @@ class FileMonitoringService {
 
     // 데이터베이스 초기화
     await _initializeDatabase();
+
+    // ObsidianWriter 초기화
+    try {
+      await ObsidianWriter.initDatabase();
+      print('ObsidianWriter 데이터베이스 초기화 완료');
+    } catch (e) {
+      print('ObsidianWriter 초기화 오류: $e');
+    }
 
     // 주기적 파일 스캔 타이머 시작
     Timer.periodic(const Duration(seconds: 10), (timer) async {
@@ -218,18 +227,37 @@ class FileMonitoringService {
     }
   }
 
-  // 통화 요약 파일 처리 (JSON → 마크다운 변환)
+  // 통화 요약 파일 처리 (JSON → 마크다운 변환 + 옵시디언 저장)
   static Future<void> _processCallSummaryFile(String filePath) async {
     try {
+      // 파일명 추출 (중복 처리 확인용)
+      String fileName = filePath.split('/').last;
+
+      // 이미 처리된 파일인지 확인
+      bool alreadyProcessed = await ObsidianWriter.isAlreadyProcessed(fileName);
+      if (alreadyProcessed) {
+        print('이미 처리된 파일 건너뛰기: $fileName');
+        return;
+      }
+
       // 파일 내용 읽기
       File file = File(filePath);
       String content = await file.readAsString();
 
       // JSON 형태인지 간단히 확인
       if (content.trim().startsWith('{') && content.trim().endsWith('}')) {
-        // 마크다운 변환 시도
+        // 1. 마크다운 변환
         String markdownPath = await MarkdownService.processJsonFile(filePath);
         print('마크다운 변환 성공: $filePath → $markdownPath');
+
+        // 2. JSON 파싱하여 통화자 정보 추출
+        String markdownContent =
+            CallSummaryConverter.convertCallSummaryToMarkdown(content);
+
+        // 3. 옵시디언 파일에 저장
+        await ObsidianWriter.appendToObsidianFile(markdownContent, fileName);
+
+        print('옵시디언 파일 저장 및 처리 완료: $fileName');
       } else {
         // JSON이 아닌 일반 텍스트 파일
         print('일반 텍스트 파일로 인식: $filePath');

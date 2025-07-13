@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/file_monitoring_service.dart';
 import 'markdown_list_screen.dart';
+import 'obsidian_settings_screen.dart';
 
 class ServiceControlScreen extends StatefulWidget {
   const ServiceControlScreen({super.key});
@@ -90,6 +91,19 @@ class _ServiceControlScreenState extends State<ServiceControlScreen> {
       appBar: AppBar(
         title: const Text('파일 감지 서비스'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ObsidianSettingsScreen(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
