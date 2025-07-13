@@ -5,6 +5,7 @@ import 'package:flutter_background_service/flutter_background_service.dart';
 import 'dart:io';
 import 'services/file_monitoring_service.dart';
 import 'screens/service_control_screen.dart';
+import 'screens/path_settings_screen.dart';
 import 'utils/test_data_generator.dart';
 
 void main() async {
@@ -388,6 +389,27 @@ class _HomePageState extends State<HomePage> {
                 },
                 icon: const Icon(Icons.folder),
                 label: const Text('감지된 파일 보기'),
+              ),
+
+            const SizedBox(height: 10),
+
+            // 경로 설정 버튼
+            if (_hasStoragePermission)
+              OutlinedButton.icon(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PathSettingsScreen(),
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.settings),
+                label: const Text('경로 설정'),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: Colors.blue,
+                  side: const BorderSide(color: Colors.blue),
+                ),
               ),
 
             const SizedBox(height: 10),
